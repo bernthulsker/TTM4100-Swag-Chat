@@ -25,7 +25,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		self.port = self.client_address[1]
 		self.connection = self.request
 		self.username = None
-		self.server.connections.append(self)
+		self.server.connected_clients.append(self)
 
 
 		# Loop that listens for messages from the client
