@@ -43,7 +43,7 @@ class Client:
     def send_payload(self, data):
         self.connection.send(data)
         
-    def take_input():
+    def take_input(self):
         payload = {}
         payload['request'] = input('Enter request:')
         payload['content'] = input('Enter content:')
