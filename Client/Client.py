@@ -18,6 +18,16 @@ class Client:
     def run(self):
         # Initiate the connection to the server
         self.connection.connect((self.host, self.server_port))
+
+        while (1):
+            new_payload = take_input(self)
+
+            if payload['request'] == 'disconnect':
+                self.disconnect()
+                exit()
+
+            send_payload(json.dumps(new_payload))
+            
         
     def disconnect(self):
         self.connection.close()
@@ -27,14 +37,14 @@ class Client:
         pass
 
     def send_payload(self, data):
-        # TODO: Handle sending of a payload
-        pass
+        self.connection.send(data)
         
     def take_input(self):
-        command = input('Enter request:')
+        payload = {}
+        payload['request'] = input('Enter request:')
+        payload['content'] = input('Enter content:')
 
-        content = input('Enter content:')
-
+        return payload
     # More methods may be needed!
 
 
