@@ -46,7 +46,9 @@ class Client:
     def take_input():
         payload = {}
         payload['request'] = input('Enter request:')
-        payload['content'] = input('Enter content:')
+
+        if payload['request'] == login or payload['request']==message:
+            payload['content'] = input('Enter content:')
 
         return payload
     # More methods may be needed!
