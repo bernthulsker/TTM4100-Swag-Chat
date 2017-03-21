@@ -3,8 +3,14 @@ import socket
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
 
+
+HOST    = "10.24.32.74"
+PORTNUM = 9997
+
 class Client:
     def __init__(self, host, server_port):
+        self.host = host
+        self.server_port = server_port
         """
         This method is run when creating a new Client object
         """
@@ -27,14 +33,15 @@ class Client:
                 exit()
 
             send_payload(json.dumps(new_payload))
-            
+
         
     def disconnect(self):
         self.connection.close()
 
     def receive_message(self, message):
-        # TODO: Handle incoming message
-        pass
+        msg_parser = MessageParser()
+
+        print msg_parser.parse(message)
 
     def send_payload(self, data):
         self.connection.send(data)
@@ -55,4 +62,4 @@ if __name__ == '__main__':
 
     No alterations are necessary
     """
-    client = Client('localhost', 9998)
+    client = Client(HOST, PORTNUM)

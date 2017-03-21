@@ -43,7 +43,7 @@ class MessageParser():
         dummy += payload['content'] + "\n"
         return dummy
 
-    def parse_history(self. payload):
+    def parse_history(self, payload):
         dummy = str(payload['timestamp']) + "\n"
         dummy += "Sender: " + payload['sender'] + "\n"
         dummy += "Response: " + payload['response'] + "\n"
