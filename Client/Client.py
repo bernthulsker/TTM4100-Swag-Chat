@@ -3,10 +3,6 @@ import socket
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
 
-
-HOST    = "10.24.32.74"
-PORTNUM = 9997
-
 class Client:
     def __init__(self, host, server_port):
         self.host = host
@@ -62,4 +58,4 @@ if __name__ == '__main__':
 
     No alterations are necessary
     """
-    client = Client(HOST, PORTNUM)
+    client = Client('localhost', 9998)
