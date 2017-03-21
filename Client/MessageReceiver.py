@@ -15,4 +15,4 @@ class MessageReceiver(Thread):
         while(1):
             content = self.connection.recv(4096)
             if content:
-                self.client.recieve_message(content)
+                self.client.receive_message(content)

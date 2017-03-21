@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import socket
+import json
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
+from threading import Thread
 
 
 class Client:
@@ -21,15 +23,17 @@ class Client:
     def run(self):
         # Initiate the connection to the server
         self.connection.connect((self.host, self.server_port))
+        self.thread = MessageReceiver(self, self.connection)
+        self.thread.start()
 
         while (1):
             new_payload = self.take_input()
 
-            if payload['request'] == 'disconnect':
+            if new_payload['request'] == 'disconnect':
                 self.disconnect()
                 exit()
 
-            send_payload(json.dumps(new_payload))
+            self.send_payload(json.dumps(new_payload))
 
         
     def disconnect(self):
@@ -45,16 +49,19 @@ class Client:
         
     def take_input(self):
         payload = {}
-        payload['request'] = input('Enter request:')
+        payload['request'] = raw_input('Enter request:')
 
-        if payload['request'] == login or payload['request']==message:
-            payload['content'] = input('Enter content:')
+        if payload['request'] == 'login' or payload['request']=='message':
+            payload['content'] = raw_input('Enter content:')
 
         return payload
     # More methods may be needed!
 
 
 if __name__ == '__main__':
+    dummy = {}
+
+
     """
     This is the main method and is executed when you type "python Client.py"
     in your terminal.
