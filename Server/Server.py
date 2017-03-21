@@ -30,18 +30,18 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 		# Loop that listens for messages from the client
 		while True:
-			received_json = self.connection.recv(4096)
+			recieved_json = self.connection.recv(4096)
 
 			recieved = json.loads(recieved_json)
 
 			if (recieved["request"] == "login") and (recieved["content"] is not None):
-				self.login(self, recieved["content"])
+				self.login( recieved["content"])
 				self.history()
 			elif recieved["request"] == "help":
-				self.help(self)
+				self.help()
 			elif recieved["request"] == "logout":
 				if self.username is not None:
-					self.logout(self)
+					self.logout()
 				else:
 					self.error("Not logged in.")
 
@@ -64,17 +64,16 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		if not re.match("[A-Za-z0-9_-]+$", username):
 			self.error("Username not valid")
 
-		elif self in server.connected_clients:
+		elif self.user_connected(username):
 			self.error("Username already taken")
 
 		else:
 			self.username = username
 			print (username + " logged in.")
-			self.send_response(self, "Server", "info", "Login sccuessful")
-
+			self.send_response( "Server", "Info", "Login sccuessful")
 
 	def logout(self):
-		self.send_response(self, "Server", "info", "logout successful")
+		self.send_response(self, "Server", "Info", "logout successful")
 		if self in server.connected_clients:
 			server.connected_clients.remove(self)
 
@@ -83,16 +82,20 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		for user in server.connected_clients:
 			if user.username is not None:
 				names += user.username + ", "
-		self.send_response(self, "Server", "info", names)
+		self.send_response( "Server", "Info", names)
 
 	def help(self):
-		self.send_message("info", "Available commands: login <username<, logout, msg <message>, names, help")
+		self.send_response( "Server", "Info", "Available commands: login <username<, logout, msg <message>, names, help")
 
 	def history(self):
 		history = []
 		for message in server.chat_history:
 			history.append(message)
-		self.send_response(self, "Server", "history", history)
+		self.send_response( "Server", "History", history)
+
+	def error(self, content):
+
+		self.send_response("Server", "Error", content)
 
 	def send_message(username, content):
 		for user in server.connected_clients:
@@ -100,11 +103,18 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 	def send_response(self, sender, response, content):
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
+		print reply
 		reply_json = json.dumps(reply)
 		self.connection.send(reply_json.encode())
 
 		if response == "message":
 			server.chat_history.append(reply_json)
+
+	def user_connected(self, username):
+		for user in server.connected_clients:
+			if user.username == username:
+				return True
+		return False
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
