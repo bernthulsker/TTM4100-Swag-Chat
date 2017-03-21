@@ -1,3 +1,5 @@
+import json
+
 
 
 class MessageParser():
@@ -6,19 +8,47 @@ class MessageParser():
         self.possible_responses = {
             'error': self.parse_error,
             'info': self.parse_info,
+            'message': self.parse_message,
+            'history': self.parse_history,
 	    # More key:values pairs are needed	
         }
 
     def parse(self, payload):
-        payload = # decode the JSON object
+        payload = json.loads(payload)
 
         if payload['response'] in self.possible_responses:
             return self.possible_responses[payload['response']](payload)
         else:
-            # Response not valid
+            return "Error. Non-valid response from server"
+            
 
     def parse_error(self, payload):
+        dummy = str(payload['timestamp']) + "\n"
+        dummy += "Sender: " + payload['sender'] + "\n"
+        dummy += "Response: " + payload['response'] + "\n"
+        dummy += payload['content'] + "\n"
+        return dummy
     
     def parse_info(self, payload):
+        dummy = str(payload['timestamp']) + "\n"
+        dummy += "Sender: " + payload['sender'] + "\n"
+        dummy += "Response: " + payload['response'] + "\n"
+        dummy += payload['content'] + "\n"
+        return dummy
+
+    def parse_message(self,payload):
+        dummy = str(payload['timestamp']) + "\n"
+        dummy += "Sender: " + payload['sender'] + "\n"
+        dummy += "Response: " + payload['response'] + "\n"
+        dummy += payload['content'] + "\n"
+        return dummy
+
+    def parse_history(self. payload):
+        dummy = str(payload['timestamp']) + "\n"
+        dummy += "Sender: " + payload['sender'] + "\n"
+        dummy += "Response: " + payload['response'] + "\n"
+        dummy += payload['content'] + "\n"
+        return dummy
+
     
     # Include more methods for handling the different responses... 
