@@ -4,10 +4,6 @@ from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
 
 class Client:
-    """
-    This is the chat client class
-    """
-
     def __init__(self, host, server_port):
         """
         This method is run when creating a new Client object
@@ -24,8 +20,7 @@ class Client:
         self.connection.connect((self.host, self.server_port))
         
     def disconnect(self):
-        # TODO: Handle disconnection
-        pass
+        self.connection.close()
 
     def receive_message(self, message):
         # TODO: Handle incoming message
@@ -35,6 +30,11 @@ class Client:
         # TODO: Handle sending of a payload
         pass
         
+    def take_input(self):
+        command = input('Enter request:')
+
+        content = input('Enter content:')
+
     # More methods may be needed!
 
 
