@@ -22,7 +22,7 @@ class Client:
         self.connection.connect((self.host, self.server_port))
 
         while (1):
-            new_payload = take_input(self)
+            new_payload = self.take_input()
 
             if payload['request'] == 'disconnect':
                 self.disconnect()
@@ -42,7 +42,7 @@ class Client:
     def send_payload(self, data):
         self.connection.send(data)
         
-    def take_input(self):
+    def take_input():
         payload = {}
         payload['request'] = input('Enter request:')
         payload['content'] = input('Enter content:')
