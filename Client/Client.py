@@ -3,6 +3,7 @@ import socket
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
 
+
 class Client:
     def __init__(self, host, server_port):
         self.host = host
