@@ -3,6 +3,7 @@ import socket
 import json
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
+from threading import Thread
 
 
 class Client:
@@ -23,6 +24,10 @@ class Client:
         # Initiate the connection to the server
         self.connection.connect((self.host, self.server_port))
         self.thread = MessageReceiver(self, self.connection)
+<<<<<<< HEAD
+=======
+        self.thread.start()
+>>>>>>> a83db13ba7d6f53417845994891a19d0e9b7c476
 
         while (1):
             new_payload = self.take_input()
@@ -50,7 +55,11 @@ class Client:
         payload = {}
         payload['request'] = raw_input('Enter request:')
 
+<<<<<<< HEAD
         if payload['request'] == "login" or payload['request']=="message":
+=======
+        if payload['request'] == 'login' or payload['request']=='message':
+>>>>>>> a83db13ba7d6f53417845994891a19d0e9b7c476
             payload['content'] = raw_input('Enter content:')
 
         return payload
@@ -58,6 +67,9 @@ class Client:
 
 
 if __name__ == '__main__':
+    dummy = {}
+
+
     """
     This is the main method and is executed when you type "python Client.py"
     in your terminal.
