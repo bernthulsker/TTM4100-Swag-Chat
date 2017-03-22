@@ -24,10 +24,7 @@ class Client:
         # Initiate the connection to the server
         self.connection.connect((self.host, self.server_port))
         self.thread = MessageReceiver(self, self.connection)
-<<<<<<< HEAD
-=======
         self.thread.start()
->>>>>>> a83db13ba7d6f53417845994891a19d0e9b7c476
 
         while (1):
             new_payload = self.take_input()
@@ -55,11 +52,7 @@ class Client:
         payload = {}
         payload['request'] = raw_input('Enter request:')
 
-<<<<<<< HEAD
         if payload['request'] == "login" or payload['request']=="message":
-=======
-        if payload['request'] == 'login' or payload['request']=='message':
->>>>>>> a83db13ba7d6f53417845994891a19d0e9b7c476
             payload['content'] = raw_input('Enter content:')
 
         return payload
