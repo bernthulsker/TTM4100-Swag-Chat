@@ -70,6 +70,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		else:
 			self.username = username
 			print (username + " logged in.")
+			server.connected_clients.append(username)
 			self.send_response( "Server", "Info", "Login sccuessful")
 
 	def logout(self):
@@ -103,7 +104,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 	def send_response(self, sender, response, content):
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
-		print reply
 		reply_json = json.dumps(reply)
 		self.connection.send(reply_json.encode())
 

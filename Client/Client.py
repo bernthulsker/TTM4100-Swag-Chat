@@ -51,7 +51,7 @@ class Client:
         payload = {}
         payload['request'] = raw_input('Enter request:')
 
-        if payload['request'] == 'login' or payload['request']=='message':
+        if payload['request'] == 'login' or payload['request']=='msg':
             payload['content'] = raw_input('Enter content:')
 
         return payload

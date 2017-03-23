@@ -6,10 +6,10 @@ class MessageParser():
     def __init__(self):
 
         self.possible_responses = {
-            'error': self.parse_error,
-            'info': self.parse_info,
-            'message': self.parse_message,
-            'history': self.parse_history,
+            'Error': self.parse_error,
+            'Info': self.parse_info,
+            'Message': self.parse_message,
+            'History': self.parse_history,
 	    # More key:values pairs are needed	
         }
 
@@ -47,7 +47,8 @@ class MessageParser():
         dummy = str(payload['timestamp']) + "\n"
         dummy += "Sender: " + payload['sender'] + "\n"
         dummy += "Response: " + payload['response'] + "\n"
-        dummy += payload['content'] + "\n"
+        for word in payload['content']:
+            dummy += word + "\n"
         return dummy
 
     
