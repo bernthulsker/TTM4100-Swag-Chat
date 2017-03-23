@@ -48,7 +48,7 @@ class MessageParser():
         dummy += "Sender: " + payload['sender'] + "\n"
         dummy += "Response: " + payload['response'] + "\n"
         for word in payload['content']:
-            dummy += word + "\n"
+            dummy += self.parse_message(json.loads(word)) + '\n'
         return dummy
 
     

@@ -52,12 +52,12 @@ class Client:
         
     def take_input(self):
         payload = {}
-        payload['request'] = raw_input('Enter request:')
+        payload['request'] = raw_input()
 
 
         if payload['request'] == 'login' or payload['request']=='msg':
             payload['content'] = raw_input('Enter content:')
-
+        print '\n'
         return payload
     # More methods may be needed!
 
