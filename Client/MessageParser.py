@@ -6,10 +6,10 @@ class MessageParser():
     def __init__(self):
 
         self.possible_responses = {
-            'Error': self.parse_error,
-            'Info': self.parse_info,
-            'Message': self.parse_message,
-            'History': self.parse_history,
+            'error': self.parse_error,
+            'info': self.parse_info,
+            'message': self.parse_message,
+            'history': self.parse_history,
 	    # More key:values pairs are needed	
         }
 
@@ -19,7 +19,7 @@ class MessageParser():
         if payload['response'] in self.possible_responses:
             return self.possible_responses[payload['response']](payload)
         else:
-            return "Error. Non-valid response from server"
+            return "error. Non-valid response from server"
             
 
     def parse_error(self, payload):

@@ -62,19 +62,19 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 	def login(self, username):
 		if not re.match('[A-Za-z0-9_-]+$', username):
 			self.error("Username not valid")
-
+		elif self.username is not None:
+			self.error('Already logged in')
 		elif self.user_connected(username):
 			self.error("Username already taken")
-
 		else:
 			self.username = username
 			print (username + " logged in.")
 			server.connected_clients.append(self)
-			self.send_response( "Server", "Info", "Login sccuessful")
+			self.send_response( "Server", "info", "Login sccuessful")
 			self.history()
 
 	def logout(self):
-		self.send_response('Server', 'Info', "logout successful")
+		self.send_response('Server', 'info', "logout successful")
 		self.username = None
 		if self in server.connected_clients:
 			server.connected_clients.remove(self)
@@ -85,31 +85,31 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		for user in server.connected_clients:
 			if user.username is not None:
 				names += user.username + ", "
-		self.send_response( 'Server', 'Info', names)
+		self.send_response( 'Server', 'info', names)
 
 	def help(self):
-		self.send_response( 'Server', 'Info', "Available commands: login <username>, logout, msg <message>, names, help")
+		self.send_response( 'Server', 'info', "Available commands: login <username>, logout, msg <message>, names, help")
 
 	def history(self):
 		history = []
 		for message in server.chat_history:
 			history.append(message)
-		self.send_response( 'Server', 'History', history)
+		self.send_response( 'Server', 'history', history)
 
 	def error(self, content):
 
-		self.send_response('Server', 'Error', content)
+		self.send_response('Server', 'error', content)
 
 	def send_message(self, content):
 		for user in server.connected_clients:
-			user.send_response(self.username, 'Message', content)
+			user.send_response(self.username, 'message', content)
 
 	def send_response(self, sender, response, content):
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
 		reply_json = json.dumps(reply)
 		self.connection.send(reply_json.encode())
 
-		if response == 'Message' and reply not in server.chat_history:
+		if response == 'message' and reply not in server.chat_history:
 			server.chat_history.append(reply_json)
 
 	def user_connected(self, username):
