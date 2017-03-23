@@ -35,7 +35,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 			if (recieved['request'] == 'login') and (recieved['content'] is not None):
 				self.login( recieved['content'])
-				self.history()
+				
 			elif recieved['request'] == 'help':
 				self.help()
 			elif recieved['request'] == 'logout':
@@ -71,6 +71,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 			print (username + " logged in.")
 			server.connected_clients.append(self)
 			self.send_response( "Server", "Info", "Login sccuessful")
+			self.history()
 
 	def logout(self):
 		self.send_response('Server', 'Info', "logout successful")
