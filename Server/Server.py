@@ -103,14 +103,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 			user.send_response(self, username, 'Message', content)
 
 	def send_response(self, sender, response, content):
-<<<<<<< HEAD
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
-=======
-		reply = {'timestamp': time.asctime(time.localtime(time.time())), 'sender': sender, 'response': response, 'content': content}
-		print reply
->>>>>>> 51a500d5a63a351a52cd07191c268efc2c3ffdc3
 		reply_json = json.dumps(reply)
-		print reply_json
 		self.connection.send(reply_json.encode())
 
 		if response == 'message':
