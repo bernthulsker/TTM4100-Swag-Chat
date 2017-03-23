@@ -15,7 +15,6 @@ class MessageParser():
 
     def parse(self, payload):
         payload = json.loads(payload)
-        print payload['response']
 
         if payload['response'] in self.possible_responses:
             return self.possible_responses[payload['response']](payload)

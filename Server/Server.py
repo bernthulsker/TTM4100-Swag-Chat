@@ -25,7 +25,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		self.port = self.client_address[1]
 		self.connection = self.request
 		self.username = None
-		self.server.connected_clients.append(self)
 
 
 		# Loop that listens for messages from the client
@@ -47,7 +46,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 			elif recieved['request'] == 'msg':
 				if self.username is not None:
-					self.send_message(self.username, recieved['content'])
+					self.send_message(recieved['content'])
 				else:
 					self.error("Not logged in.")
 
@@ -70,13 +69,15 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		else:
 			self.username = username
 			print (username + " logged in.")
-			server.connected_clients.append(username)
+			server.connected_clients.append(self)
 			self.send_response( "Server", "Info", "Login sccuessful")
 
 	def logout(self):
-		self.send_response(self, 'Server', 'Info', "logout successful")
+		self.send_response('Server', 'Info', "logout successful")
+		self.username = None
 		if self in server.connected_clients:
 			server.connected_clients.remove(self)
+
 
 	def names (self):
 		names = ""
@@ -98,16 +99,16 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 		self.send_response('Server', 'Error', content)
 
-	def send_message(username, content):
+	def send_message(self, content):
 		for user in server.connected_clients:
-			user.send_response(self, username, 'Message', content)
+			user.send_response(self.username, 'Message', content)
 
 	def send_response(self, sender, response, content):
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
 		reply_json = json.dumps(reply)
 		self.connection.send(reply_json.encode())
 
-		if response == 'message':
+		if response == 'Message' and reply not in server.chat_history:
 			server.chat_history.append(reply_json)
 
 	def user_connected(self, username):

@@ -4,6 +4,7 @@ import json
 from MessageReceiver import MessageReceiver
 from MessageParser import MessageParser
 from threading import Thread
+import time
 
 
 class Client:
@@ -28,13 +29,14 @@ class Client:
 
         while (1):
             new_payload = self.take_input()
-            print new_payload
 
             if new_payload['request'] == 'disconnect':
                 self.disconnect()
                 exit()
 
             self.send_payload(json.dumps(new_payload))
+            time.sleep(0.1)
+
 
         
     def disconnect(self):
