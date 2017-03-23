@@ -69,14 +69,9 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 		else:
 			self.username = username
-<<<<<<< HEAD
 			print (username + " logged in.")
 			server.connected_clients.append(username)
 			self.send_response( "Server", "Info", "Login sccuessful")
-=======
-			print (username + ' logged in.')
-			self.send_response( 'Server', 'Info', "Login sccuessful")
->>>>>>> 51a500d5a63a351a52cd07191c268efc2c3ffdc3
 
 	def logout(self):
 		self.send_response(self, 'Server', 'Info', "logout successful")
