@@ -28,6 +28,7 @@ class Client:
 
         while (1):
             new_payload = self.take_input()
+            print new_payload
 
             if new_payload['request'] == 'disconnect':
                 self.disconnect()
@@ -50,6 +51,7 @@ class Client:
     def take_input(self):
         payload = {}
         payload['request'] = raw_input('Enter request:')
+
 
         if payload['request'] == 'login' or payload['request']=='msg':
             payload['content'] = raw_input('Enter content:')

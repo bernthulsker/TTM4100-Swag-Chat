@@ -34,24 +34,24 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 			recieved = json.loads(recieved_json)
 
-			if (recieved["request"] == "login") and (recieved["content"] is not None):
-				self.login( recieved["content"])
+			if (recieved['request'] == 'login') and (recieved['content'] is not None):
+				self.login( recieved['content'])
 				self.history()
-			elif recieved["request"] == "help":
+			elif recieved['request'] == 'help':
 				self.help()
-			elif recieved["request"] == "logout":
+			elif recieved['request'] == 'logout':
 				if self.username is not None:
 					self.logout()
 				else:
 					self.error("Not logged in.")
 
-			elif recieved["request"] == "msg":
+			elif recieved['request'] == 'msg':
 				if self.username is not None:
-					self.send_message(self.username, recieved["content"])
+					self.send_message(self.username, recieved['content'])
 				else:
 					self.error("Not logged in.")
 
-			elif recieved["request"] == "names":
+			elif recieved['request'] == 'names':
 				if self.username is not None:
 					self.names()
 				else:
@@ -61,7 +61,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 				self.error("The request is not supported.")
 
 	def login(self, username):
-		if not re.match("[A-Za-z0-9_-]+$", username):
+		if not re.match('[A-Za-z0-9_-]+$', username):
 			self.error("Username not valid")
 
 		elif self.user_connected(username):
@@ -69,12 +69,17 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 		else:
 			self.username = username
+<<<<<<< HEAD
 			print (username + " logged in.")
 			server.connected_clients.append(username)
 			self.send_response( "Server", "Info", "Login sccuessful")
+=======
+			print (username + ' logged in.')
+			self.send_response( 'Server', 'Info', "Login sccuessful")
+>>>>>>> 51a500d5a63a351a52cd07191c268efc2c3ffdc3
 
 	def logout(self):
-		self.send_response(self, "Server", "Info", "logout successful")
+		self.send_response(self, 'Server', 'Info', "logout successful")
 		if self in server.connected_clients:
 			server.connected_clients.remove(self)
 
@@ -83,31 +88,37 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 		for user in server.connected_clients:
 			if user.username is not None:
 				names += user.username + ", "
-		self.send_response( "Server", "Info", names)
+		self.send_response( 'Server', 'Info', names)
 
 	def help(self):
-		self.send_response( "Server", "Info", "Available commands: login <username<, logout, msg <message>, names, help")
+		self.send_response( 'Server', 'Info', "Available commands: login <username>, logout, msg <message>, names, help")
 
 	def history(self):
 		history = []
 		for message in server.chat_history:
 			history.append(message)
-		self.send_response( "Server", "History", history)
+		self.send_response( 'Server', 'History', history)
 
 	def error(self, content):
 
-		self.send_response("Server", "Error", content)
+		self.send_response('Server', 'Error', content)
 
 	def send_message(username, content):
 		for user in server.connected_clients:
-			user.send_response(self, username, "Message", content)
+			user.send_response(self, username, 'Message', content)
 
 	def send_response(self, sender, response, content):
+<<<<<<< HEAD
 		reply = {"timestamp": time.asctime(time.localtime(time.time())), "sender": sender, "response": response, "content": content}
+=======
+		reply = {'timestamp': time.asctime(time.localtime(time.time())), 'sender': sender, 'response': response, 'content': content}
+		print reply
+>>>>>>> 51a500d5a63a351a52cd07191c268efc2c3ffdc3
 		reply_json = json.dumps(reply)
+		print reply_json
 		self.connection.send(reply_json.encode())
 
-		if response == "message":
+		if response == 'message':
 			server.chat_history.append(reply_json)
 
 	def user_connected(self, username):
@@ -118,26 +129,29 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
-    """
-    This class is present so that each client connected will be ran as a own
-    thread. In that way, all clients will be served by the server.
+	"""
+	This class is present so that each client connected will be ran as a own
+	thread. In that way, all clients will be served by the server.
 
-    No alterations are necessary
-    """
-    allow_reuse_address = True
-    connected_clients = []
-    chat_history = []
+	No alterations are necessary
+	"""
+	allow_reuse_address = True
+	connected_clients = []
+	chat_history = []
 
-if __name__ == "__main__":
-    """
-    This is the main method and is executed when you type "python Server.py"
-    in your terminal.
+if __name__ == '__main__':
 
-    No alterations are necessary
-    """
-    HOST, PORT = 'localhost', 9998
-    print 'Server running...'
+	"""
+	This is the main method and is executed when you type 'python Server.py'
+	in your terminal.
 
-    # Set up and initiate the TCP server
-    server = ThreadedTCPServer((HOST, PORT), ClientHandler)
-    server.serve_forever()
+	No alterations are necessary
+	"""
+
+	HOST = 'localhost'
+	PORT = 9998
+	print 'Server running...'
+
+	# Set up and initiate the TCP server
+	server = ThreadedTCPServer((HOST, PORT), ClientHandler)
+	server.serve_forever()
