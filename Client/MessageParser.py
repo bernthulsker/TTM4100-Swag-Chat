@@ -39,7 +39,7 @@ class MessageParser():
     def parse_message(self,payload):
         dummy = str(payload['timestamp']) + "\n"
         dummy += "Sender: " + payload['sender'] + "\n"
-        dummy += "Response: " + payload['response'] + "\n"
+        #dummy += "Response: " + payload['response'] + "\n"
         dummy += payload['content'] + "\n"
         return dummy
 
